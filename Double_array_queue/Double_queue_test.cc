@@ -1,67 +1,93 @@
+// 双端队列是为了同时实现 栈 和 队列 两种数据结构
+// 因此只需测试这两种数据结构即可
+
 #include <iostream>
 #include "double_queue.h"
 
 int main(void) {
-	// 初始化一个大小为6的队列，只能存5个数，一个空着用于判断队满
-	auto queue = new double_queue(6);
+	int size = 5;
+	// 初始化一个大小为6的栈，只能存5个数，一个空着用于判断满
+	auto stack = new double_queue(size+1);
+	// 初始化一个大小为6的队列，只能存5个数，一个空着用于判断满
+	auto queue = new double_queue(size+1);
 
-	queue->left_in(0);
-	queue->left_in(1);
-	queue->left_in(2);
-	queue->left_in(3);
-	queue->left_in(4);
+	
+	/* 左插左删的栈 */
+	// 将栈填满
+	for (auto i = 0; i < size; ++i) {
+		stack->left_in(i);
+	}
+	// 栈已满，操作无效，会报错
+	stack->left_in(size);
+	// 将栈依次输出并弹出
+	for (auto i = 0; i < size; ++i) {
+		std::cout << stack->left_get() << "	"; 
+		stack->left_out();
+	}
+	std::cout << std::endl;
+	/*
+		期望输出：
+		Queue is full! left_in failed!
+		4	3	2	1	0
+	*/
 
-	// 堆满，报错
-	queue->left_in(5);
+	/* 右插右删的栈 */
+	// 将栈填满
+	for (auto i = 0; i < size; ++i) {
+		stack->right_in(i);
+	}
+	// 栈已满，操作无效，会报错
+	stack->right_in(size);
+	// 将栈依次输出并弹出
+	for (auto i = 0; i < size; ++i) {
+		std::cout << stack->right_get() << "	";
+		stack->right_out();
+	}
+	std::cout << std::endl;
+	/*
+		期望输出：
+		Queue is full! right_in failed!
+		4	3	2	1	0
+	*/
 
-	std::cout << queue->left_get() << std::endl; // 0
-	queue->left_out();
-	// 此时队满
-	queue->left_in(5);
+	
+	/* 左插右删队列 */
+	// 将队列填满
+	for (auto i = 0; i < size; ++i) {
+		queue->left_in(i);
+	}
+	// 队列已满，操作无效，会报错
+	queue->left_in(size);
+	// 将队头元素依次输出并出队
+	for (auto i = 0; i < size; ++i) {
+	 	std::cout << queue->right_get() << "	";
+		queue->right_out();
+	}
+	std::cout << std::endl;
+	/*
+		期望输出：
+		Queue is full! left_in failed!
+		0	1	2	3	4
+	*/
 
-	// 依次输出队列元素
-	std::cout << queue->left_get() << std::endl; // 1
-	queue->left_out();
-	// 此时队满
-	queue->left_in(6);
-	std::cout << queue->left_get() << std::endl; // 2
-	queue->left_out();
-	std::cout << queue->left_get() << std::endl; // 3
-	queue->left_out(); 
-	std::cout << queue->left_get() << std::endl; // 4
-	queue->left_out();
-	std::cout << queue->left_get() << std::endl; // 5
-	queue->left_out();
-	std::cout << queue->left_get() << std::endl; // 6
-
-	/*queue->left_in(0);
-	queue->left_in(1);
-	queue->left_in(2);
-	queue->left_in(3);
-	queue->left_in(4);
-
-	// 堆满，报错
-	queue->left_in(5);
-
-	std::cout << queue->left_get() << std::endl; // 0
-	queue->left_out();
-	// 此时队满
-	queue->left_in(5);
-
-	// 依次输出队列元素
-	std::cout << queue->left_get() << std::endl; // 1
-	queue->left_out();
-	// 此时队满
-	queue->left_in(6);
-	std::cout << queue->left_get() << std::endl; // 2
-	queue->left_out();
-	std::cout << queue->left_get() << std::endl; // 3
-	queue->left_out();
-	std::cout << queue->left_get() << std::endl; // 4
-	queue->left_out();
-	std::cout << queue->left_get() << std::endl; // 5
-	queue->left_out();
-	std::cout << queue->left_get() << std::endl; // 6*/
+	/* 右插左删队列 */
+	// 将队列填满
+	for (auto i = 0; i < size; ++i) {
+		queue->right_in(i);
+	}
+	// 队列已满，操作无效，会报错
+	queue->left_in(size);
+	// 将队头元素依次输出并出队
+	for (auto i = 0; i < size; ++i) {
+		std::cout << queue->left_get() << "	";
+		queue->left_out();
+	}
+	std::cout << std::endl;
+	/*
+		期望输出：
+		Queue is full! right_in failed!
+		0	1	2	3	4
+	*/
 
 	return 0;
 }

@@ -9,17 +9,17 @@
 class double_queue {
 public:
 	double_queue(int sz) : nums(sz), left(0), right(0), size(sz) { };
-	// 左入队
+	// 左入
 	void left_in(int);
-	// 右入队
+	// 左出
 	void right_in(int);
-	// 左出队
+	// 左删
 	void left_out();
-	// 右出队
+	// 右删
 	void right_out();
-	// 查看左队头
+	// 查看左边
 	int left_get();
-	// 查看右对头
+	// 查看右边
 	int right_get();
 
 private:

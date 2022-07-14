@@ -1,4 +1,4 @@
-// 链表实现双端队列--由于是队列，空间无限
+// 链表实现双端队列--由于是链表，空间无限
 
 #ifndef DOUBLE_QUEUE_H
 #define DOUBLE_QUEUE_H
@@ -7,12 +7,12 @@
 
 class double_queue {
 public:
-	double_queue(int num) : num(num), left(nullptr), right(nullptr), size(0) {
-		auto temp1 = mid, temp2 = left_side, temp3 = right_side;
+	double_queue(int num) : num(num), pre(nullptr), next(nullptr) {
+		auto temp1 = mid, temp2 = left, temp3 = right;
 		// 开始时，左右指针都指向中间指针
 		mid = this;
-		left_side = this;
-		right_side = this;
+		left = this;
+		right = this;
 		delete temp1, temp2, temp3;
 	}
 	// 左入队
@@ -35,15 +35,13 @@ private:
 	// 中间指针
 	static double_queue* mid;
 	// 队列左队头指针
-	static double_queue* left_side;
+	static double_queue* left;
 	// 队列右队头指针
-	static double_queue* right_side;
+	static double_queue* right;
 	// 节点的左指针
-	double_queue* left;
+	double_queue* pre;
 	// 节点的右指针
-	double_queue* right;
-	// 队列大小
-	std::size_t size;
+	double_queue* next;
 };
 
 #endif
