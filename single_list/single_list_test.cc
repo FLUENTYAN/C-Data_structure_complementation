@@ -4,7 +4,7 @@
 
 int main(void) {
     // 初始化第一个节点为0
-    single_list* list = new single_list(0);
+    auto list = new single_list(0);
     
     // 第二个位置插入两次
     list->insert_after(2);

@@ -19,7 +19,7 @@ int single_list::val_get() const {
 void single_list::insert_after(int num) {
     // 需要node存在，要插入的值num不存在
     if (this != nullptr && !exist_num(num)) {
-        single_list* temp = new single_list();
+        auto temp = new single_list();
         temp->next = this->next;
         this->next = temp;
         this->next->val = num;
@@ -33,9 +33,9 @@ void single_list::insert_after(int num) {
 void single_list::erase_after(void) {
     // 需要node和node->next存在
     if (this != nullptr && this->next != nullptr) {
-        single_list* temp = this-next;
+        auto temp = this->next;
         this->next = this->next->next;
-        delete(temp);
+        delete temp;
     } else {
         std::cerr << "Erasing failed!" << std::endl;
     }

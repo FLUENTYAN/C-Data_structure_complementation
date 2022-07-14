@@ -4,7 +4,7 @@
 
 int main(void) {
 	// 创建一个大小为5的栈
-	Stack* stack = new Stack(5);
+	auto stack = new Stack(5);
 
 	// 栈为空，出栈失败，报错
 	stack->pop();

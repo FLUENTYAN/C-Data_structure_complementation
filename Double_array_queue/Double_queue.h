@@ -6,9 +6,9 @@
 #include <vector>
 #include <cstddef>
 
-class Double_queue {
+class double_queue {
 public:
-	Double_queue(int sz) : nums(sz), left(0), right(0), size(sz) { };
+	double_queue(int sz) : nums(sz), left(0), right(0), size(sz) { };
 	// 左入队
 	void left_in(int);
 	// 右入队

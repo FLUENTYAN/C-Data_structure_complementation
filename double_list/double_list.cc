@@ -19,7 +19,7 @@ int double_list::val_get() const {
 void double_list::insert_after(int num) {
     // 插入位置后面有节点, 要插入的值在链表中没有
     if (this != nullptr && this->next != nullptr && !exist_num(num)) {
-        double_list* temp = new double_list();
+        auto temp = new double_list();
         this->next->pre = temp;
         temp->next = this->next;
         temp->pre = this;
@@ -28,7 +28,7 @@ void double_list::insert_after(int num) {
     }
     // 插入位置后面没有节点, 要插入的值在链表中没有
     else if (this != nullptr && this->next == nullptr && !exist_num(num)) {
-        double_list* temp = new double_list();
+        auto temp = new double_list();
         temp->next = nullptr;
         temp->pre = this;
         this->next = temp;
@@ -42,16 +42,16 @@ void double_list::insert_after(int num) {
 void double_list::erase_after(void) {
     // 要删除的节点后面有节点
     if (this != nullptr && this->next != nullptr) {
-        double_list* temp = this->next;
+        auto temp = this->next;
         this->next = this->next->next;
         this->next->pre = this;
-        delete(temp);
+        delete temp;
     }
     // 要删除的节点后面为空
     else if (this != nullptr && this->next == nullptr) {
-        double_list* temp = this->next;
+        auto temp = this->next;
         this->next = nullptr;
-        delete(temp);
+        delete temp;
     } else {
         std::cerr << "Erasing failed!" << std::endl;
     }

@@ -1,9 +1,9 @@
 #include <iostream>
-#include "Double_queue.h"
+#include "double_queue.h"
 
 int main(void) {
 	// 初始化一个大小为6的队列，只能存5个数，一个空着用于判断队满
-	Double_queue* queue = new Double_queue(6);
+	auto queue = new double_queue(6);
 
 	queue->left_in(0);
 	queue->left_in(1);

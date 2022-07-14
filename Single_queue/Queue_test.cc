@@ -3,7 +3,7 @@
 
 int main(void) {
 	// 初始化一个大小为6的队列，只能存5个数，一个空着用于判断队满
-	Queue* queue = new Queue(6);
+	auto queue = new Queue(6);
 
 	queue->in(0);
 	queue->in(1);
