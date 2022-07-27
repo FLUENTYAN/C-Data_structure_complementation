@@ -2,6 +2,7 @@
 
 
 - Array_stack                     栈--数组实现
+- AVL_tree                        平衡树
 - Binary_search_tree              二叉排序树/二叉搜索树
 - Double_array_queue              双端队列--数组实现
 - Double_list_queue               双端队列--链表实现
