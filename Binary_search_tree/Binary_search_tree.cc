@@ -1,104 +1,65 @@
 #include <iostream>
 #include "Binary_search_tree.h"
 
-// 类内static成员的定义
-Binary_search_tree* Binary_search_tree::root = nullptr;
-
 // 插入
-void Binary_search_tree::insert(int num, Binary_search_tree* node) {
-	while (true) {
-		if (num < node->num && node->left == nullptr) { // 放左边
-			auto temp = new Binary_search_tree();
-			node->left = temp; 
-			temp->num = num;
-			return;
-		} else if (num > node->num && node->right == nullptr) { // 放右边
-			auto temp = new Binary_search_tree();
-			node->right = temp;
-			temp->num = num; 
-			return;
-		} else if (num < node->num) { // 左边放不下
-			node = node->left; continue;
-		} else if (num > node->num) { // 右边放不下
-			node = node->right; continue;
+void Binary_search_tree::insert(int num, Binary_search_tree*& node) {
+		if (node == nullptr) { 
+			node = new Binary_search_tree(num);
+		} else if (num < node->num) { // 左递
+			insert(num, node->left);
+		} else if (num > node->num) { // 右递
+			insert(num, node->right);
 		} else {
 			std::cerr << "Integer the same, insert failed!" << std::endl; return;
 		}
-	}
 }
 // 删除
-void Binary_search_tree::remove(int num, Binary_search_tree* node) { // 递归查找与删除结合
-	if (node->num == num) {
-		// 要删节点左右都有孩子
-		// 将要删节点值变为左边最大的，再删掉左边最大的
-		if (node->left != nullptr && node->right != nullptr) {
-			auto toRemove = node;
-			node = node->left;
-			// 待删除节点左孩子的右孩子不存在
-			if (node->right == nullptr) {
-				auto temp = node;
-				toRemove->num = node->num;
-				toRemove->left = node->left;
-				delete temp;
-				return;
-			}
-			// 待删除节点左孩子的右孩子存在
-			while (true) {
-				if (node->right == nullptr) {
-					auto pre = prev(node->num, root);
-					auto temp = node;
-					toRemove->num = node->num; 
-					pre->right = nullptr;
-					delete temp;
-					return;
-				} else {
-					node = node->right;
-				}
-			}
-		} else { // 只有一个孩子或没有
-			auto pre = prev(num, root);
-			// 要删除节点为根节点
-			if (node == root) {
-				auto temp = node;
-				root = (node->left != nullptr) ? node->left : node->right;
-				delete temp; 
-			} else { // 要删的不是根节点
-				auto temp = node;
-				auto& Node = (pre->left == node) ? pre->left : pre->right;
-				Node = (node->left != nullptr) ? node->left : node->right;
-				delete temp;
-			}
-		}
-	} else if (num < node->num) { // 向左递
+void Binary_search_tree::remove(int num, Binary_search_tree*& node) {
+	// 查看要删的节点是否存在
+	auto temp1 = node->find_node(num);
+	if (temp1 == nullptr) {
+		std::cerr << "Node not exist, remove failed!" << std::endl;
+		return;
+	} 
+	if (num < node->num) { // 往左找
 		remove(num, node->left);
-	} else if (num > node->num) { // 向右递
+	} else if (num > node->num) { // 往右找
 		remove(num, node->right);
+	} else {
+		if (node->left && node->right) { // 左右子树都有
+			auto temp2 = left_max(node->left);
+			remove(temp2->num, node);
+			temp1->num = temp2->num;
+		} else { // 只有一个子树或没有
+			auto temp = (node->left != nullptr) ? node->left : node->right;
+			node = temp;
+			delete temp;
+		}
 	}
 }
 // 中序遍历
-void Binary_search_tree::inorder_traversal(Binary_search_tree* node) {
-	// 向左递
-	if (node != nullptr && node->left != nullptr) {
-		inorder_traversal(node->left);
+void Binary_search_tree::inorder_traversal() {
+	if (this != nullptr && this->left != nullptr)
+		this->left->inorder_traversal();
+	std::cout << this->num << " ";
+	if (this != nullptr && this->right != nullptr)
+		this->right->inorder_traversal();
+}
+// 查找节点
+Binary_search_tree* Binary_search_tree::find_node(int num) {
+	if (this == nullptr || this->num == num) {
+		return this;
 	}
-	// 输出
-	std::cout << node->num << " ";
-	// 向右递
-	if (node != nullptr && node->right != nullptr) {
-		inorder_traversal(node->right);
+	else if (num < this->num) {
+		this->left->find_node(num);
+	}
+	else if (num > this->num) {
+		this->right->find_node(num);
 	}
 }
-// 找前一个节点
-Binary_search_tree* Binary_search_tree::prev(int num, Binary_search_tree* node) {
-	if (node->num == num && node == root) {
-		return node;
-	} else if (node->left->num == num) {
-		return node;
-	} else if (node->right->num == num) {
-		return node;
-	} else if (num < node->num) { // 向左递
-		prev(num, node->left);
-	} else if (num > node->num) { // 向右递
-		prev(num, node->right);
-	}
+// 找左子树最大值
+Binary_search_tree* Binary_search_tree::left_max(Binary_search_tree* node) {
+	while (node->right != nullptr)
+		node = node->right;
+	return node;
 }
